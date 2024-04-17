@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace IsometricGrid.Grid
+namespace IsometricGrid.GenerateGrid
 {
     public class GenerateGrid : MonoBehaviour
     {
@@ -13,6 +13,7 @@ namespace IsometricGrid.Grid
         [SerializeField] private int _totalCell;
         void Start()
         {
+            Grid.Grid grid =new Grid.Grid(5,5,10);
             _tileSize = _tilePrefab.TileSize;
             DrawGrid();
         }
