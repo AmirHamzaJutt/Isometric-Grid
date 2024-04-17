@@ -1,11 +1,21 @@
+using System;
 using UnityEngine;
 
 namespace IsometricGrid.InputSystem
 {
     public class Input_System : MonoBehaviour
     {
-        [SerializeField] private Camera _mainCamera;
+        public static Action RightMouseClick;
+        public static Action LeftMouseClick;
+
+        private Camera _mainCamera;
         [SerializeField] private LayerMask _layer;
+        [SerializeField] private Transform Target;
+
+        private void Start()
+        {
+            _mainCamera = GetComponent<Camera>();
+        }
         private void Update()
         {
             Vector3 mousePosition = Input.mousePosition;
@@ -14,7 +24,24 @@ namespace IsometricGrid.InputSystem
             if (Physics.Raycast(ray, out raycastHit, Mathf.Infinity, _layer))
             {
                 Vector3 targetPosition = raycastHit.point;
-                transform.position = targetPosition;
+               Target. transform.position = targetPosition;
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+              //  
+                if (RightMouseClick != null)
+                {
+                    RightMouseClick();
+                }
+            }
+            if (Input.GetMouseButtonDown(1))
+            {
+                // 
+                if (LeftMouseClick != null)
+                {
+                    LeftMouseClick();
+                }
             }
         }
         private void OnDrawGizmos()
@@ -27,6 +54,7 @@ namespace IsometricGrid.InputSystem
                 Gizmos.DrawRay(ray.origin, ray.direction * 500f);
             }
         }
+       
     }
 }
 

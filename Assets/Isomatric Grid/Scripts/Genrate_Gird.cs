@@ -6,34 +6,54 @@ namespace IsometricGrid.GenerateGrid
 {
     public class GenerateGrid : MonoBehaviour
     {
-        [SerializeField] private Tile.Tile _tilePrefab;
-        [SerializeField] private int _row;
-        [SerializeField] private int _column;
-        [SerializeField] private float _tileSize;
-        [SerializeField] private int _totalCell;
+        private Grid.Grid _grid;
+        [SerializeField] private Transform MousePosition;
+        [SerializeField] private Tile.Tile TilePrefab;
+        [SerializeField] private int Row;
+        [SerializeField] private int Col;
+        [SerializeField] private float CellSize;
+
+        private void OnEnable()
+        {
+            InputSystem.Input_System.RightMouseClick += RightMouseClick;
+            InputSystem.Input_System.LeftMouseClick += LeftMouseClick;
+        }
+        //  [SerializeField] private int _totalCell;
         void Start()
         {
-            Grid.Grid grid =new Grid.Grid(5,5,1);
-            _tileSize = _tilePrefab.TileSize;
-            DrawGrid();
+            _grid = new Grid.Grid(Row, Col, CellSize, transform.position);
+            // _tileSize = _tilePrefab.TileSize;
+            // DrawGrid();
+            DrawTilesOnGrid();
         }
-        void DrawGrid()
+        //void DrawGrid()
+        //{
+        //    for (int i = 0; i < _row; i++)
+        //    {
+        //        Vector3 offsetZ = new Vector3(0, 0, _tileSize) * i;
+
+        //        for (int j = 0; j < _column; j++)
+        //        {
+        //            Tile.Tile tempTile = Instantiate(_tilePrefab, transform.position, transform.rotation);
+        //            tempTile.transform.parent = transform;
+        //            Vector3 offsetX = new Vector3(_tileSize, 0, 0) * j;
+        //            tempTile.transform.localPosition = offsetX + offsetZ;
+        //            _totalCell += 1;
+        //            tempTile._ID = _totalCell;
+        //        }
+        //    }
+        //}
+        void DrawTilesOnGrid()
         {
-            for (int i = 0; i < _row; i++)
-            {
-                Vector3 offsetZ = new Vector3(0, 0, _tileSize) * i;
-
-                for (int j = 0; j < _column; j++)
-                {
-                    Tile.Tile tempTile = Instantiate(_tilePrefab, transform.position, transform.rotation);
-                    tempTile.transform.parent = transform;
-                    Vector3 offsetX = new Vector3(_tileSize, 0, 0) * j;
-                    tempTile.transform.localPosition = offsetX + offsetZ;
-                    _totalCell += 1;
-                    tempTile._ID = _totalCell;
-                }
-            }
+            _grid.DrawTiles(TilePrefab);
         }
-
+        private void RightMouseClick()
+        {
+            _grid.SetValue(MousePosition.position, 56);
+        }
+        private void LeftMouseClick()
+        {
+            _grid.GetValue(MousePosition.position);
+        }
     }
 }
