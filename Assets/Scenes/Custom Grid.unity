@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 19086930}
   - component: {fileID: 19086929}
   - component: {fileID: 19086932}
+  - component: {fileID: 19086933}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -223,13 +224,29 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 19086928}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3889aaa4e40bdc9488a320ab8a3600fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   filePath: D:\Unity Projects\Assignments\Isometric Grid\Assets\Isomatric Grid\Json
     data\data.json
+--- !u!114 &19086933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19086928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9b64bcb0e886b545bf9337276306a01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _layer:
+    serializedVersion: 2
+    m_Bits: 1
+  Target: {fileID: 1427838861}
 --- !u!1 &1053916647
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,11 +291,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37b51d2696b4c644b95eed49cebb3b87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InputSystem: {fileID: 1427838858}
-  _tilePrefab: {fileID: 6259169836504593103, guid: b33c5fb7018647246a1acc5eeef180a4, type: 3}
-  Row: 4
-  Col: 4
-  CellSize: 4
+  MousePosition: {fileID: 1427838861}
+  TilePrefab: {fileID: 6259169836504593103, guid: b33c5fb7018647246a1acc5eeef180a4, type: 3}
+  Row: 20
+  Col: 20
+  CellSize: 1
 --- !u!1 &1085705898
 GameObject:
   m_ObjectHideFlags: 0
@@ -504,7 +521,7 @@ Transform:
   m_GameObject: {fileID: 1388400758}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.5, y: 0, z: -9.5}
+  m_LocalPosition: {x: -10, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -522,7 +539,6 @@ GameObject:
   - component: {fileID: 1427838861}
   - component: {fileID: 1427838860}
   - component: {fileID: 1427838859}
-  - component: {fileID: 1427838858}
   m_Layer: 0
   m_Name: Input Manager
   m_TagString: Untagged
@@ -530,22 +546,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1427838858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1427838857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9b64bcb0e886b545bf9337276306a01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mainCamera: {fileID: 19086930}
-  _layer:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!23 &1427838859
 MeshRenderer:
   m_ObjectHideFlags: 0
