@@ -13,7 +13,7 @@ namespace IsometricGrid.GenerateGrid
         [SerializeField] private int _totalCell;
         void Start()
         {
-            Grid.Grid grid =new Grid.Grid(5,5,10);
+            Grid.Grid grid =new Grid.Grid(5,5,1);
             _tileSize = _tilePrefab.TileSize;
             DrawGrid();
         }
