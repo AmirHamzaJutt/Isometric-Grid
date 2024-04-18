@@ -25,13 +25,12 @@ namespace IsometricGrid.Grid
             {
                 for (int y = 0; y < _gridArray.GetLength(1); y++)
                 {
-                    Debug.LogError(_gridArray[x, y]);
-                    Debug.DrawLine(GetWorlPosition(x, y), GetWorlPosition(x + 1, y), Color.red, 100f);
-                    Debug.DrawLine(GetWorlPosition(x, y), GetWorlPosition(x, y + 1), Color.black, 100f);
+                    Debug.DrawLine(GetWorlPosition(x, y), GetWorlPosition(x + 1, y), Color.red,Mathf.Infinity);
+                    Debug.DrawLine(GetWorlPosition(x, y), GetWorlPosition(x, y + 1), Color.black, Mathf.Infinity);
                 }
             }
-            Debug.DrawLine(GetWorlPosition(0, height), GetWorlPosition(width, height), Color.red, 100f);
-            Debug.DrawLine(GetWorlPosition(width, 0), GetWorlPosition(width, height), Color.black, 100f);
+            Debug.DrawLine(GetWorlPosition(0, height), GetWorlPosition(width, height), Color.red, Mathf.Infinity);
+            Debug.DrawLine(GetWorlPosition(width, 0), GetWorlPosition(width, height), Color.black, Mathf.Infinity);
         }
         private Vector3 GetWorlPosition(int x, int z)
         {
@@ -74,21 +73,22 @@ namespace IsometricGrid.Grid
             GetGridPosition(worldPosition,out x, out y);
             return GetValue(x, y);
         }
-        public void DrawTiles(Tile.Tile tile)
+        public void DrawTiles(GridTile.Tile tile,Transform parent)
         {
             
             for (int x = 0; x < _gridArray.GetLength(0); x++)
             {
                 for (int y = 0; y < _gridArray.GetLength(1); y++)
                 {
-                    Debug.LogError(_gridArray[x, y]);
-                    Tile.Tile tempTile= Instantiate(tile, GetWorlPosition(x, y),Quaternion.identity);
-                    tempTile.TileType = DataReader.Json_Reader.instance.GridDataa.TerrainGrid[x][y].TileType;
                     _totalTiles += 1;
-                    tempTile._ID = _totalTiles;
+                    GridTile.Tile tempTile= Instantiate(tile, GetWorlPosition(x, y),Quaternion.identity);
+                    tempTile.TileType = DataReader.Json_Reader.instance.GridDataa.TerrainGrid[x][y].TileType;
+                    tempTile. transform.parent = parent;
+                    tempTile.Id = _totalTiles;
+                    tempTile.TileSize = _cellSize;
                 }
-            }
-            
+            }   
         }
+  
     }
 }

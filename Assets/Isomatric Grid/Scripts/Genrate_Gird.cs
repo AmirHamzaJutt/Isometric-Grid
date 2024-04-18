@@ -9,15 +9,15 @@ namespace IsometricGrid.GenerateGrid
     {
         private Grid.Grid _grid;
         [SerializeField] private Transform MousePosition;
-        [SerializeField] private Tile.Tile TilePrefab;
+        [SerializeField] private GridTile.Tile TilePrefab;
         [SerializeField] private int Row;
         [SerializeField] private int Col;
         [SerializeField] private float CellSize;
         private DataReader.Json_Reader _reader;
         private void OnEnable()
         {
-            InputSystem.Input_System.RightMouseClick += RightMouseClick;
-            InputSystem.Input_System.LeftMouseClick += LeftMouseClick;
+            GridInputSystem.Input_System.RightMouseClick += RightMouseClick;
+            GridInputSystem.Input_System.LeftMouseClick += LeftMouseClick;
         }
         private void Awake()
         {
@@ -31,12 +31,13 @@ namespace IsometricGrid.GenerateGrid
         }
         void GetData()
         {
-            Row = _reader.GridDataa.TerrainGrid.Length;
-            Col = _reader.GridDataa.TerrainGrid[0].Length;
+            Row = _reader.GridRows;
+            Col = _reader.GridCol;
+            //Debug.LogError(Row + "   " + Col);
         }
         void DrawTilesOnGrid()
         {
-            _grid.DrawTiles(TilePrefab);
+            _grid.DrawTiles(TilePrefab,transform);
         }
         private void RightMouseClick()
         {

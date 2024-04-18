@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace IsometricGrid.Tile
+namespace IsometricGrid.GridTile
 {
     public class Tile : MonoBehaviour
     {
-        public int _ID;
+        public int Id;
         public int TileType;
-        [SerializeField] private GameObject[] _texture;
-        public int TileSize;
+        public float TileSize;
+        public bool TileOccupied;
+        [SerializeField] private GameObject[] Texture;
         private void Start()
         {
-            _texture[TileType].gameObject.SetActive(true);
+            Texture[TileType].gameObject.SetActive(true);
+            transform.localScale =new Vector3( TileSize,TileSize,TileSize);
         }
     }
 }
