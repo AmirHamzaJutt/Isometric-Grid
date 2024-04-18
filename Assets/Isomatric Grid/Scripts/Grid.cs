@@ -11,6 +11,7 @@ namespace IsometricGrid.Grid
         private int _width;
         private int _height;
         private float _cellSize;
+        private int _totalTiles;
         private int[,] _gridArray;
         private Vector3 _originPosition;
         public Grid(int width, int height, float cellSize, Vector3 originPosition)
@@ -75,12 +76,16 @@ namespace IsometricGrid.Grid
         }
         public void DrawTiles(Tile.Tile tile)
         {
+            
             for (int x = 0; x < _gridArray.GetLength(0); x++)
             {
                 for (int y = 0; y < _gridArray.GetLength(1); y++)
                 {
                     Debug.LogError(_gridArray[x, y]);
-                    Instantiate(tile, GetWorlPosition(x, y),Quaternion.identity);
+                    Tile.Tile tempTile= Instantiate(tile, GetWorlPosition(x, y),Quaternion.identity);
+                    tempTile.TileType = DataReader.Json_Reader.instance.GridDataa.TerrainGrid[x][y].TileType;
+                    _totalTiles += 1;
+                    tempTile._ID = _totalTiles;
                 }
             }
             

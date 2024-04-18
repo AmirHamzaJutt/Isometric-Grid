@@ -7,12 +7,12 @@ namespace IsometricGrid.Tile
     public class Tile : MonoBehaviour
     {
         public int _ID;
-        [SerializeField] private int _tileType;
+        public int TileType;
         [SerializeField] private GameObject[] _texture;
         public int TileSize;
         private void Start()
         {
-            _texture[_tileType].gameObject.SetActive(true);
+            _texture[TileType].gameObject.SetActive(true);
         }
     }
 }

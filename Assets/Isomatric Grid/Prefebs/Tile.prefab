@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6937763461262180753
 Transform:
   m_ObjectHideFlags: 0
@@ -346,6 +346,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2110731574551554332}
   - component: {fileID: 6259169836504593103}
+  - component: {fileID: 4933385480673984452}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -392,3 +393,24 @@ MonoBehaviour:
   - {fileID: 3315968403170443448}
   - {fileID: 1782910242239428076}
   TileSize: 1
+--- !u!65 &4933385480673984452
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6044416321147403652}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 0.028361678, z: 1}
+  m_Center: {x: 0.5, y: 0.004224539, z: 0.5}
