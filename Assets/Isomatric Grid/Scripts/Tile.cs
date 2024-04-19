@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace IsometricGrid.GridTile
@@ -9,7 +7,7 @@ namespace IsometricGrid.GridTile
         public int Id;
         public int TileType;
         public float TileSize;
-        public bool TileOccupied;
+        public bool IsOccupied;
         [SerializeField] private GameObject[] Texture;
         private void Start()
         {

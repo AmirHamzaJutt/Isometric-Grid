@@ -2,7 +2,6 @@ using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
 using IsometricGrid.Data;
-using System;
 
 namespace IsometricGrid.DataReader
 {
@@ -21,10 +20,10 @@ namespace IsometricGrid.DataReader
             instance = this;
             _json = File.ReadAllText(Application.dataPath + FilePath);
             GridDataa = JsonConvert.DeserializeObject<GridData>(_json);
-            //GridRows = GridDataa.TerrainGrid.Length;
-            // GridCol = GridDataa.TerrainGrid[0].Length; 
-            GridRows = 4;
-            GridCol = 7;
+            GridRows = GridDataa.TerrainGrid.Length;
+            GridCol = GridDataa.TerrainGrid[0].Length; 
+            //GridRows = 15;
+           // GridCol = 13;
         }
         void Start()
         {

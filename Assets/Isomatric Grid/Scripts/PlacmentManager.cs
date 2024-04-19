@@ -1,75 +1,105 @@
-
 using IsometricGrid.GridTile;
 using IsometricGrid.DataReader;
 using UnityEngine;
-using System;
+using Unity.VisualScripting;
 
 public class PlacmentManager : MonoBehaviour
 {
-    [SerializeField] private GameObject PlacmentPrefeb;
+    [SerializeField] private GameObject HorizontalPrefeb;
+    [SerializeField] private GameObject VerticalPrefeb;
+
     private int _row;
     private int _col;
+
+    private int _rightNeihbourIndex;
+    private int _leftNeihbourIndex;
+    private int _bottomNeihbourIndex;
+    private int _topNeihbourIndex;
+
+    public Tile _rightNeihbour;
+    public Tile _leftNeihbour;
+    public Tile _bottomNeihbour;
+    public Tile _topNeihbour;
+    public Tile _selectedGameobject;
     private void Start()
     {
         _row = Json_Reader.instance.GridRows;
         _col = Json_Reader.instance.GridCol;
-        //Debug.LogError(_row + "   " + _col);
     }
-    private enum _type { Dirt=0,Grass=1,Stone=2,Wood=3}
-    [SerializeField] private _type TileType = _type.Wood;
-    public void PlaceObject(Transform objectPosition,Tile tile)
+
+    public void PlaceObject(GameObject grid, int index,int availableType)
     {
-        if(!tile.TileOccupied && tile.TileType == (int)TileType)
+        FindNeighbors(index, grid, availableType);
+
+        _selectedGameobject.IsOccupied = true;
+        if(_leftNeihbour!=null || _rightNeihbour!=null)
         {
-            Instantiate(PlacmentPrefeb, objectPosition.position, objectPosition.rotation);
-            tile.TileOccupied = true;
-            Debug.LogError("Object Placed successfully");
+            //horizontal
+            Debug.LogError("horizontal object placed");
+            //Instantiate(HorizontalPrefeb, _selectedGameobject.transform.position, _selectedGameobject.transform.rotation);
         }
-        else
+        else if(_topNeihbour!=null || _bottomNeihbour!=null)
         {
-            Debug.LogError("Can't able to placed Object");
+            //vertical
+            Debug.LogError("vertical object placed");
+
+            // Instantiate(VerticalPrefeb, _selectedGameobject.transform.position, _selectedGameobject.transform.rotation);
         }
-        FindNeighbors(tile);
     }
-    public void FindNeighbors(Tile tile)
+    public void FindNeighbors(int index,GameObject grid, int availableType)
     {
-        int index = tile.Id;
-        Debug.LogError("tile index =" + index);
+        _leftNeihbourIndex = -1;
+        _rightNeihbourIndex = -1;
+        _bottomNeihbourIndex = -1;
+        _topNeihbourIndex= -1;
+
+        _topNeihbour = null;
+        _bottomNeihbour= null;
+        _leftNeihbour = null;
+        _rightNeihbour=null;
+        _selectedGameobject = null;
+
+        _selectedGameobject= grid.transform.GetChild(index-1).GetComponent<Tile>();
         if (index % _col != 0)
         {
-            int leftNeihbour = index + 1;
-            Debug.LogError("Riht Neighbors =" + leftNeihbour);
+            _rightNeihbourIndex = index + 1;
+            Tile tempNeihbour = grid.transform.GetChild(_rightNeihbourIndex - 1).GetComponent<Tile>();
+            if (tempNeihbour.TileType == availableType)
+            {
+                Debug.LogError(tempNeihbour.TileType);
+                _rightNeihbour = tempNeihbour;
+            }
         }
-        else
+        if (index % _col != 1)
         {
-            Debug.LogError("Riht Neighbors not available");
+            _leftNeihbourIndex = index - 1;
+            Tile tempNeihbour = grid.transform.GetChild(_leftNeihbourIndex - 1).GetComponent<Tile>();
+            if (tempNeihbour.TileType == availableType)
+            {
+                Debug.LogError(tempNeihbour.TileType);
+                _leftNeihbour = tempNeihbour;
+            }
         }
-        if(index % _col != 1) 
+        if (index <= (_row * _col) - _col)
         {
-            int leftNeihbour = index - 1;
-            Debug.LogError("Left Neighbors =" + leftNeihbour);
+            _bottomNeihbourIndex = index + _col;
+            Tile tempNeihbour = grid.transform.GetChild(_bottomNeihbourIndex - 1).GetComponent<Tile>();
+            if (tempNeihbour.TileType == availableType)
+            {
+                Debug.LogError(tempNeihbour.TileType);
+                _bottomNeihbour = tempNeihbour;
+            }
         }
-        else
+        if (index > _col)
         {
-            Debug.LogError("Left Neighbors not available");
+            _topNeihbourIndex = index - _col;
+            Tile tempNeihbour = grid.transform.GetChild(_topNeihbourIndex - 1).GetComponent<Tile>();
+            if (tempNeihbour.TileType == availableType)
+            {
+                Debug.LogError(tempNeihbour.TileType);
+                _topNeihbour = tempNeihbour;
+            }
         }
-        if (index < (_row*_col)-_row)
-        {
-            int bottomNeihbour = index + _col;
-            Debug.LogError("Bottom Neighbors =" + bottomNeihbour);
-        }
-        else
-        {
-            Debug.LogError("Bottom Neighbors not available");
-        }
-        if(index > _col)
-        {
-            int topNeibour = index - _col;
-            Debug.LogError("Top Neighbors =" + topNeibour);
-        }
-        else
-        {
-            Debug.LogError("Top Neighbors not available");
-        }
+        Debug.LogError("Selected index=["+index+"]    left["+_leftNeihbourIndex+"]    right["+_rightNeihbourIndex+"]    bottom["+_bottomNeihbourIndex+"]    top["+_topNeihbourIndex+"]" );
     }
 }

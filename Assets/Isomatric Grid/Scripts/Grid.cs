@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 namespace IsometricGrid.Grid
@@ -21,9 +17,9 @@ namespace IsometricGrid.Grid
             _cellSize = cellSize;
             _gridArray = new int[width, height];
             _originPosition = originPosition;
-            for (int x = 0; x < _gridArray.GetLength(0); x++)
+            for (int x = 0; x < width; x++)
             {
-                for (int y = 0; y < _gridArray.GetLength(1); y++)
+                for (int y = 0; y < height; y++)
                 {
                     Debug.DrawLine(GetWorlPosition(x, y), GetWorlPosition(x + 1, y), Color.red,Mathf.Infinity);
                     Debug.DrawLine(GetWorlPosition(x, y), GetWorlPosition(x, y + 1), Color.black, Mathf.Infinity);
@@ -75,10 +71,9 @@ namespace IsometricGrid.Grid
         }
         public void DrawTiles(GridTile.Tile tile,Transform parent)
         {
-            
-            for (int x = 0; x < _gridArray.GetLength(0); x++)
+            for (int x = 0; x < _width; x++)
             {
-                for (int y = 0; y < _gridArray.GetLength(1); y++)
+                for (int y = 0; y < _height; y++)
                 {
                     _totalTiles += 1;
                     GridTile.Tile tempTile= Instantiate(tile, GetWorlPosition(x, y),Quaternion.identity);
@@ -86,6 +81,7 @@ namespace IsometricGrid.Grid
                     tempTile. transform.parent = parent;
                     tempTile.Id = _totalTiles;
                     tempTile.TileSize = _cellSize;
+                    tempTile.name = _totalTiles.ToString();
                 }
             }   
         }

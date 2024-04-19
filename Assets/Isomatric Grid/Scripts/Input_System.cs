@@ -1,22 +1,31 @@
 using IsometricGrid.GridTile;
 using System;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace IsometricGrid.GridInputSystem
 {
     public class Input_System : MonoBehaviour
     {
-        public static Action RightMouseClick;
-        public static Action LeftMouseClick;
-        private Camera _mainCamera;
+        private enum _type { Dirt = 0, Grass = 1, Stone = 2, Wood = 3 }
+        [SerializeField] private _type TileType = _type.Wood;
+
+        public Highliter HighliterPointer;
+        public GameObject Grid;
         [SerializeField] private LayerMask Layer;
-        public Transform Target;
+
+        private Camera _mainCamera;
         private PlacmentManager _placmentManager;
         private void Start()
         {
-            _placmentManager=GetComponent<PlacmentManager>();
+            if (GetComponent<PlacmentManager>() != null)
+            {
+                _placmentManager = GetComponent<PlacmentManager>();
+            }
             _mainCamera = GetComponent<Camera>();
+        }
+        private void OnMouseDown()
+        {
+            Debug.LogError("mouse click");
         }
         private void Update()
         {
@@ -26,27 +35,29 @@ namespace IsometricGrid.GridInputSystem
             if (Physics.Raycast(ray, out raycastHit, Mathf.Infinity, Layer))
             {
                 Vector3 targetPosition = raycastHit.collider.bounds.center;
-                Target.transform.position = targetPosition;
-
-                if (Input.GetMouseButtonDown(0))
-                {
-                    Tile tempTile = raycastHit.transform.gameObject.GetComponent<Tile>();
-                    _placmentManager.PlaceObject(Target, tempTile);
-
-                    //if (RightMouseClick != null)
-                    //{
-                    //    RightMouseClick();
-                    //}
+                HighliterPointer.transform.position = targetPosition;
+                Tile tempTile = raycastHit.transform.gameObject.GetComponent<Tile>();
+                HighliterPointer.SetColor(!tempTile.IsOccupied , tempTile.TileType == (int)TileType);
+                if(!tempTile.IsOccupied && tempTile.TileType == (int)TileType)
+                    {
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        if (_placmentManager != null)
+                        {
+                            _placmentManager.PlaceObject(Grid, tempTile.Id, (int)TileType);
+                            Debug.LogError("Object Placed successfully");
+                        }
+                        else
+                        {
+                            Debug.LogError("placment Manager could not found");
+                        }
+                    } 
                 }
-                //if (Input.GetMouseButtonDown(1))
-                //{
-                //    if (LeftMouseClick != null)
-                //    {
-                //        LeftMouseClick();
-                //    }
-                //}
+                else
+                {
+                    Debug.LogError("Can't able to placed Object");
+                }
             }
-          
         }
     }
 }
