@@ -27,5 +27,6 @@ namespace IsometricGrid.GenerateGrid
         {
             _grid.DrawTiles(TilePrefab,transform);
         }
+        public Grid.Grid GetGrid() { return _grid; }
     }
 }

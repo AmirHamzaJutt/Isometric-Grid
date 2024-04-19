@@ -22,12 +22,6 @@ namespace IsometricGrid.DataReader
             GridDataa = JsonConvert.DeserializeObject<GridData>(_json);
             GridRows = GridDataa.TerrainGrid.Length;
             GridCol = GridDataa.TerrainGrid[0].Length; 
-            //GridRows = 15;
-           // GridCol = 13;
-        }
-        void Start()
-        {
-           
         }
     }
 }

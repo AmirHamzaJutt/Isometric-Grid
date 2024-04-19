@@ -1,27 +1,33 @@
 using IsometricGrid.GridTile;
-using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace IsometricGrid.GridInputSystem
 {
     public class Input_System : MonoBehaviour
     {
+        [SerializeField] private Button Reset;
         private enum _type { Dirt = 0, Grass = 1, Stone = 2, Wood = 3 }
         [SerializeField] private _type TileType = _type.Wood;
 
         public Highliter HighliterPointer;
-        public GameObject Grid;
+        public GenerateGrid.GenerateGrid Grid;
         [SerializeField] private LayerMask Layer;
 
         private Camera _mainCamera;
         private PlacmentManager _placmentManager;
         private void Start()
         {
+            Reset.onClick.AddListener(() => { ResetGrid(); });
             if (GetComponent<PlacmentManager>() != null)
             {
                 _placmentManager = GetComponent<PlacmentManager>();
             }
             _mainCamera = GetComponent<Camera>();
+        }
+        public void ResetGrid()
+        {
+            _placmentManager.ResetSpawnObject();
         }
         private void OnMouseDown()
         {
@@ -45,7 +51,7 @@ namespace IsometricGrid.GridInputSystem
                         if (_placmentManager != null)
                         {
                             _placmentManager.PlaceObject(Grid, tempTile.Id, (int)TileType);
-                            Debug.LogError("Object Placed successfully");
+                            
                         }
                         else
                         {
