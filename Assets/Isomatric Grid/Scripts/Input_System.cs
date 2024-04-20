@@ -1,5 +1,6 @@
 using IsometricGrid.GridTile;
 using IsometricGrid.PlacmentController;
+using IsometricGrid.Type;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,8 +10,7 @@ namespace IsometricGrid.GridInputSystem
     {
         [SerializeField] private Button Reset;
 
-        private enum _type { Dirt = 0, Grass = 1, Stone = 2, Wood = 3 }
-        [SerializeField] private _type TileType = _type.Wood;
+        [SerializeField] Type.TileType Tile_type = Type.TileType.Wood;
 
         public Highliter HighliterPointer;
         public GridMaker.GenerateGrid Grid;
@@ -47,7 +47,7 @@ namespace IsometricGrid.GridInputSystem
                 Vector3 targetPosition = raycastHit.collider.bounds.center;
                 HighliterPointer.transform.position = targetPosition;
                 Tile tempTile = raycastHit.transform.gameObject.GetComponent<Tile>();
-                HighliterPointer.SetColor(!tempTile.IsOccupied, tempTile.TileType == (int)TileType);
+                HighliterPointer.SetColor(!tempTile.IsOccupied, tempTile.TileType == (int)Tile_type);
                 //if (!tempTile.IsOccupied && tempTile.TileType == (int)TileType)
                 //{
                 //}
@@ -56,9 +56,16 @@ namespace IsometricGrid.GridInputSystem
                 //    Debug.LogError("Can't able to placed Object");
                 //}
 
-                if (Input.GetMouseButtonDown(0))
+                if (tempTile.TileType == (int)Tile_type)
                 {
-                  _placmentManager.PlaceObject(HighliterPointer.transform.position);
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        _placmentManager.PlaceObject(HighliterPointer.transform.position, (int)Tile_type);
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Area Not Available");
                 }
             }
         }

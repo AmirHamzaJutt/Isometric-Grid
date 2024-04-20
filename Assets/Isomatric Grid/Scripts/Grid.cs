@@ -1,24 +1,50 @@
+using System;
+using System.Runtime.CompilerServices;
+using UnityEditor;
 using UnityEngine;
 
 namespace IsometricGrid.CustomGrid
 {
+    [Serializable]
+    public class GridArray
+    {
+        public int X, Y;
+        public int occupied;
+        public int type;
+        public GridArray(int x, int y, int type)
+        {
+            X = x;
+            Y = y;
+            this.type = type;
+        }
+    }
     public class Grid : MonoBehaviour
     {
         private int _col;
         private int _row;
         private float _cellSize;
         private int _totalTiles;
-        private int[,] _gridArray;
+        private GridArray[,] _gridArray;
         private Vector3 _originPosition;
         public Grid(int col, int row, float cellSize, Vector3 originPosition)
         {
             _col = col;
             _row = row;
             _cellSize = cellSize;
-            _gridArray = new int[col, row];
+            _gridArray = new GridArray[col, row];
             _originPosition = originPosition;
-     
+            createGrid();
             DrawDebugLines();
+        }
+        private void createGrid()
+        {
+            for (int x = 0; x < _col; x++)
+            {
+                for (int y = 0; y < _row; y++)
+                {
+                    _gridArray[x, y] = new GridArray(x, y, 0);
+                }
+            }
         }
         private void DrawDebugLines()
         {
@@ -28,6 +54,7 @@ namespace IsometricGrid.CustomGrid
                 {
                     Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), Color.red,Mathf.Infinity);
                     Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.black, Mathf.Infinity);
+                   
                 }
             }
             Debug.DrawLine(GetWorldPosition(0, _row), GetWorldPosition(_col, _row), Color.red, Mathf.Infinity);
@@ -46,17 +73,11 @@ namespace IsometricGrid.CustomGrid
         {
             if (x >= 0 && y >= 0 && x < _col && y < _row)
             {
-                _gridArray[x, y] = value;
-                Debug.LogError( "Set Value of Cell  (" + x + "," + y + ")=" + _gridArray[x,y]);
+                _gridArray[x, y].occupied = value;
+                Debug.LogError( "Set Value of Cell  (" + x + "," + y + ")=" + _gridArray[x,y].occupied);
             }
         }
-        public Vector2 FindSelectedCell(Vector3 worldPosition)
-        {
-            int x, y;
-            GetGridPosition(worldPosition, out x, out y);
-          //  Debug.LogError("Selected Value of Cell  (" + x + "," + y + ")=" + _gridArray[x, y]);
-            return new Vector2(x, y);
-        }
+    
         public void SetValue(Vector3 worldPosition, int value)
         {
             int x, y;
@@ -67,8 +88,8 @@ namespace IsometricGrid.CustomGrid
         {
             if (x >= 0 && y >= 0 && x < _col && y < _row)
             {
-                Debug.LogError("Get Value of Cell  (" + x + "," + y + ")=" + _gridArray[x, y]);
-                return _gridArray[x, y];
+                Debug.LogError("Get Value of Cell  (" + x + "," + y + ")=" + _gridArray[x, y].occupied);
+                return _gridArray[x, y].occupied;
             }
             else
             {
@@ -87,9 +108,11 @@ namespace IsometricGrid.CustomGrid
             {
                 for (int y = 0; y < _row; y++)
                 {
+                    
                     _totalTiles += 1;
                     GridTile.Tile tempTile= Instantiate(tile, GetWorldPosition(x, y),Quaternion.identity);
                     tempTile.TileType = DataReader.Json_Reader.instance.GridDataa.TerrainGrid[x][y].TileType;
+                   _gridArray[x,y].type= DataReader.Json_Reader.instance.GridDataa.TerrainGrid[x][y].TileType;
                     tempTile. transform.parent = parent;
                     tempTile.Id = _totalTiles;
                     tempTile.TileSize = _cellSize;
@@ -98,72 +121,106 @@ namespace IsometricGrid.CustomGrid
             }   
         }
 
+        public Vector2 FindSelectedCell(Vector3 worldPosition)
+        {
+            int x, y;
+            GetGridPosition(worldPosition, out x, out y);
+            Debug.LogError("Selected Value of Cell  (" + x + "," + y + ")=" + _gridArray[x, y].occupied + " type=" + _gridArray[x, y].type);
+            return new Vector2(x, y);
+        }
 
         //Find AdjacentCells--------------------------------
-        public Vector2 FindLeftCell(Vector3 worldPosition)
+        public Vector2 FindLeftCell(Vector3 worldPosition,int type)
         {
             int x, y;
             GetGridPosition(worldPosition, out x, out y);
-            if (x > 0)
+            if (x > 0 && type == _gridArray[x, y].type)
             {
                 int tempX = x - 1;
-              //  Debug.LogError("Left Value of Cell  (" + tempX + "," + y + ")=" + _gridArray[tempX, y]);
-                return new Vector2(tempX, y);
+                //  Debug.LogError("Left Value of Cell  (" + tempX + "," + y + ")=" + _gridArray[tempX, y]);
+                if (_gridArray[tempX, y].type == type)
+                {
+                    return new Vector2(tempX, y);
+                }
+                else
+                {
+                    return new Vector2(-1, -1);
+                }
             }
             else
             {
-               // Debug.LogError("Left Cell Not Exist");
+                // Debug.LogError("Left Cell Not Exist");
                 return new Vector2(-1, -1);
             }
         }
-        public Vector2 FindRightCell(Vector3 worldPosition)
+        public Vector2 FindRightCell(Vector3 worldPosition, int type)
         {
             int x, y;
             GetGridPosition(worldPosition, out x, out y);
-            if (x < _col - 1)
+            if (x < _col - 1 && type == _gridArray[x, y].type)
             {
                 int tempX = x + 1;
-               // Debug.LogError("Right Value of Cell  (" + tempX + "," + y + ")=" + _gridArray[tempX, y]);
-                return new Vector2(tempX, y);
+                // Debug.LogError("Right Value of Cell  (" + tempX + "," + y + ")=" + _gridArray[tempX, y]);
+                if (_gridArray[tempX, y].type == type)
+                {
+                    return new Vector2(tempX, y);
+                }
+                else
+                {
+                    return new Vector2(-1, -1);
+                }
             }
             else
             {
-               // Debug.LogError("Right Cell Not Exist");
+                // Debug.LogError("Right Cell Not Exist");
                 return new Vector2(-1, -1);
             }
         }
-        public Vector2 FindTopCell(Vector3 worldPosition)
+        public Vector2 FindTopCell(Vector3 worldPosition, int type)
         {
             int x, y;
             GetGridPosition(worldPosition, out x, out y);
-            if (y < _row - 1)
+            if (y < _row - 1 && type == _gridArray[x, y].type)
             {
                 int tempY = y + 1;
-               // Debug.LogError("Top Value of Cell  (" + x + "," + tempY + ")=" + _gridArray[x, tempY]);
-                return new Vector2(x, tempY);
+                // Debug.LogError("Top Value of Cell  (" + x + "," + tempY + ")=" + _gridArray[x, tempY]);
+                if (_gridArray[x, tempY].type == type)
+                {
+                    return new Vector2(x, tempY);
+                }
+                else
+                {
+                    return new Vector2(-1, -1);
+                }
             }
             else
             {
-              //  Debug.LogError("Top Cell Not Exist");
+                //  Debug.LogError("Top Cell Not Exist");
                 return new Vector2(-1, -1);
             }
         }
-        public Vector2 FindBottomCell(Vector3 worldPosition)
+        public Vector2 FindBottomCell(Vector3 worldPosition, int type)
         {
             int x, y;
             GetGridPosition(worldPosition, out x, out y);
-            if (y > 0)
+            if (y > 0 && type == _gridArray[x, y].type)
             {
                 int tempY = y - 1;
-             //   Debug.LogError("Bottom Value of Cell (" + x + "," + tempY + ") = " + _gridArray[x, tempY]);
-                return new Vector2(x, tempY);
+                //   Debug.LogError("Bottom Value of Cell (" + x + "," + tempY + ") = " + _gridArray[x, tempY]);
+                if (_gridArray[x, tempY].type == type)
+                {
+                    return new Vector2(x, tempY);
+                }
+                else
+                {
+                    return new Vector2(-1, -1);
+                }
             }
             else
             {
-              //  Debug.LogError("Bottom Cell Not Exist");
+                //  Debug.LogError("Bottom Cell Not Exist");
                 return new Vector2(-1, -1);
             }
         }
-
     }
 }

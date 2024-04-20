@@ -15,16 +15,16 @@ namespace IsometricGrid.PlacmentController
         private int _row;
         private int _col;
 
-        private int _rightNeihbourIndex;
-        private int _leftNeihbourIndex;
-        private int _bottomNeihbourIndex;
-        private int _topNeihbourIndex;
+       // private int _rightNeihbourIndex;
+      //  private int _leftNeihbourIndex;
+      //  private int _bottomNeihbourIndex;
+      //  private int _topNeihbourIndex;
 
-        private Tile _selectedGameobject;
-        private Tile _rightNeihbour;
-        private Tile _leftNeihbour;
-        private Tile _bottomNeihbour;
-        private Tile _topNeihbour;
+      //  private Tile _selectedGameobject;
+      //  private Tile _rightNeihbour;
+      //  private Tile _leftNeihbour;
+      //  private Tile _bottomNeihbour;
+       // private Tile _topNeihbour;
 
         public Vector2 _selectedCell;
         public Vector2 _leftCell;
@@ -34,8 +34,8 @@ namespace IsometricGrid.PlacmentController
 
         public List<GameObject> _allSpawnObjects;
 
-        public GenerateGrid _generateGrid;
-        public CustomGrid.Grid _grid;
+        private GenerateGrid _generateGrid;
+        private CustomGrid.Grid _grid;
 
         private void Start()
         {
@@ -47,32 +47,39 @@ namespace IsometricGrid.PlacmentController
             _generateGrid= grid;
             _grid = _generateGrid.GetGrid();
         }
-        public void PlaceObject(Vector3 position)
+        public void PlaceObject(Vector3 position,int type)
         {
             _grid = _generateGrid.GetGrid();
-            FindNeighbourWithGrid(position);
-            if (_grid.GetValue(position)==0)
+            FindNeighbourWithGrid(position,type);
+
+            Tile temptile = _generateGrid.transform.GetChild(2).GetComponent<Tile>();
+            if (_grid.GetValue(_selectedCell)==0)
             {
                 _grid.SetValue(_selectedCell, 1);
                 if (_leftCell.x != -1 || _rightCell.x != -1)
                 {
                     Debug.LogError("horizontal object placed");
-                    Collider colider;
+                    Vector3 cellPos;
                     if (_leftCell.x != -1)
                     {
                         _grid.SetValue(_leftCell, 1);
                         //  colider = _leftNeihbour.GetComponent<Collider>();
+                        int x, y;
+                        _grid.GetGridPosition(position,out x,out y);
+                        cellPos = new Vector3(x,0,y);
                     }
                     else
                     {
                         _grid.SetValue(_rightCell, 1);
-                        //colider = _selectedGameobject.GetComponent<Collider>();
+                        int x, y;
+                        _grid.GetGridPosition(position, out x, out y);
+                        cellPos = new Vector3(x, 0, y);
                     }
-                    // Vector3 center = colider.bounds.center;
-                    // GameObject tempObject = Instantiate(HorizontalPrefeb, center, _selectedGameobject.transform.rotation);
-                    // _allSpawnObjects.Add(tempObject);
+                    Vector3 center = cellPos;
+                     GameObject tempObject = Instantiate(VerticalPrefeb, center, transform.rotation);
+                     _allSpawnObjects.Add(tempObject);
                 }
-                if (_topCell.x != -1 || _bottomCell.x != -1)
+               else if (_topCell.x != -1 || _bottomCell.x != -1)
                 {
                     Debug.LogError("vertical object placed");
                     if (_bottomCell.x != -1)
@@ -96,7 +103,7 @@ namespace IsometricGrid.PlacmentController
             }
             else
             {
-                Debug.LogError("Cell occupied");
+                Debug.LogError("Space Occupied");
             }
         }
         //public void PlaceObject(GenerateGrid grid, int index, int availableType)
@@ -201,14 +208,14 @@ namespace IsometricGrid.PlacmentController
         //    }
         //    //Debug.LogError("Selected index=[" + index + "]    left[" + _leftNeihbourIndex + "]    right[" + _rightNeihbourIndex + "]    bottom[" + _bottomNeihbourIndex + "]    top[" + _topNeihbourIndex + "]");
         //}
-        public void FindNeighbourWithGrid(Vector3 position)
+        public void FindNeighbourWithGrid(Vector3 position, int type)
         {
             
             _selectedCell = _grid.FindSelectedCell(position);
-            _leftCell = _grid.FindLeftCell(position);
-            _rightCell = _grid.FindRightCell(position);
-            _topCell = _grid.FindTopCell(position);
-            _bottomCell = _grid.FindBottomCell(position);
+            _leftCell = _grid.FindLeftCell(position, type);
+            _rightCell = _grid.FindRightCell(position, type);
+            _topCell = _grid.FindTopCell(position, type);
+            _bottomCell = _grid.FindBottomCell(position, type);
         }
         public void ResetSpawnObject()
         {
