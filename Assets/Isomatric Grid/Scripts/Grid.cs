@@ -1,6 +1,7 @@
 using UnityEngine;
+using UnityEditor;
 
-namespace IsometricGrid.Grid
+namespace IsometricGrid.CustomGrid
 {
     public class Grid : MonoBehaviour
     {
@@ -17,18 +18,34 @@ namespace IsometricGrid.Grid
             _cellSize = cellSize;
             _gridArray = new int[width, height];
             _originPosition = originPosition;
-            for (int x = 0; x < width; x++)
+     
+            DrawDebugLines();
+        }
+        private void DrawDebugLines()
+        {
+            for (int x = 0; x < _width; x++)
             {
-                for (int y = 0; y < height; y++)
+                for (int y = 0; y < _width; y++)
                 {
-                    Debug.DrawLine(GetWorlPosition(x, y), GetWorlPosition(x + 1, y), Color.red,Mathf.Infinity);
-                    Debug.DrawLine(GetWorlPosition(x, y), GetWorlPosition(x, y + 1), Color.black, Mathf.Infinity);
+                    Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), Color.red,Mathf.Infinity);
+                    Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.black, Mathf.Infinity);
                 }
             }
-            Debug.DrawLine(GetWorlPosition(0, height), GetWorlPosition(width, height), Color.red, Mathf.Infinity);
-            Debug.DrawLine(GetWorlPosition(width, 0), GetWorlPosition(width, height), Color.black, Mathf.Infinity);
+            Debug.DrawLine(GetWorldPosition(0, _height), GetWorldPosition(_width, _height), Color.red, Mathf.Infinity);
+            Debug.DrawLine(GetWorldPosition(_width, 0), GetWorldPosition(_width, _height), Color.black, Mathf.Infinity);
         }
-        private Vector3 GetWorlPosition(int x, int z)
+        private void OnDrawGizmos()
+        {
+            for (int x = 0; x < _width; x++)
+            {
+                for (int y = 0; y < _width; y++)
+                {
+                    Vector3 cellPosition = GetWorldPosition(x, y);
+                    Handles.Label(cellPosition, $"{x},{y}");
+                }
+            }
+        }
+        private Vector3 GetWorldPosition(int x, int z)
         {
             return new Vector3(x, 0,z) * _cellSize+_originPosition;
         }
@@ -42,20 +59,29 @@ namespace IsometricGrid.Grid
             if (x >= 0 && y >= 0 && x < _width && y < _height)
             {
                 _gridArray[x, y] = value;
-                Debug.LogError(_gridArray[x, y] + "  (" + x + "," + y + ")");
+                Debug.LogError( "Set Value of Cell  (" + x + "," + y + ")=" + _gridArray[x,y]);
             }
         }
+        public Vector2 FindLeftCell(Vector3 worldPosition)
+        {
+            int x, y;
+            GetGridPosition(worldPosition, out x, out y);
+           // if(x)
+            return new Vector2();
+        }
+
         public void SetValue(Vector3 worldPosition, int value)
         {
             int x, y;
             GetGridPosition(worldPosition, out x, out y);
+            Debug.LogError(x+","+ y);
             SetValue(x, y, value);
         }
         private int GetValue(int x, int y)
         {
             if (x >= 0 && y >= 0 && x < _width && y < _height)
             {
-                Debug.LogError(_gridArray[x, y] + "  (" + x + "," + y + ")");
+                Debug.LogError("Get Value of Cell  (" + x + "," + y + ")=" + _gridArray[x, y]);
                 return _gridArray[x, y];
             }
             else
@@ -76,7 +102,7 @@ namespace IsometricGrid.Grid
                 for (int y = 0; y < _height; y++)
                 {
                     _totalTiles += 1;
-                    GridTile.Tile tempTile= Instantiate(tile, GetWorlPosition(x, y),Quaternion.identity);
+                    GridTile.Tile tempTile= Instantiate(tile, GetWorldPosition(x, y),Quaternion.identity);
                     tempTile.TileType = DataReader.Json_Reader.instance.GridDataa.TerrainGrid[x][y].TileType;
                     tempTile. transform.parent = parent;
                     tempTile.Id = _totalTiles;

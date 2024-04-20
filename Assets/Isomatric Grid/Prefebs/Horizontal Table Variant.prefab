@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2492972808930743954}
   - component: {fileID: 7421154893791243632}
   m_Layer: 0
-  m_Name: Horizontal
+  m_Name: Vertical
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 291949242064201668}
   - component: {fileID: 5582283670307815615}
   m_Layer: 0
-  m_Name: Vertical
+  m_Name: Horizontal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -218,7 +218,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6253991702277632683, guid: cc2e365b43e3e0e42ba22a49fd167a64, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6797993445625247403, guid: cc2e365b43e3e0e42ba22a49fd167a64, type: 3}
       propertyPath: m_Name
@@ -284,7 +284,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6253991702277632683, guid: cc2e365b43e3e0e42ba22a49fd167a64, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6797993445625247403, guid: cc2e365b43e3e0e42ba22a49fd167a64, type: 3}
       propertyPath: m_Name

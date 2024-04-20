@@ -1,4 +1,5 @@
 using IsometricGrid.GridTile;
+using IsometricGrid.PlacmentController;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +12,7 @@ namespace IsometricGrid.GridInputSystem
         [SerializeField] private _type TileType = _type.Wood;
 
         public Highliter HighliterPointer;
-        public GenerateGrid.GenerateGrid Grid;
+        public GridMaker.GenerateGrid Grid;
         [SerializeField] private LayerMask Layer;
 
         private Camera _mainCamera;
@@ -43,25 +44,29 @@ namespace IsometricGrid.GridInputSystem
                 Vector3 targetPosition = raycastHit.collider.bounds.center;
                 HighliterPointer.transform.position = targetPosition;
                 Tile tempTile = raycastHit.transform.gameObject.GetComponent<Tile>();
-                HighliterPointer.SetColor(!tempTile.IsOccupied , tempTile.TileType == (int)TileType);
-                if(!tempTile.IsOccupied && tempTile.TileType == (int)TileType)
-                    {
+                HighliterPointer.SetColor(!tempTile.IsOccupied, tempTile.TileType == (int)TileType);
+                if (!tempTile.IsOccupied && tempTile.TileType == (int)TileType)
+                {
                     if (Input.GetMouseButtonDown(0))
                     {
                         if (_placmentManager != null)
                         {
                             _placmentManager.PlaceObject(Grid, tempTile.Id, (int)TileType);
-                            
+
                         }
                         else
                         {
                             Debug.LogError("placment Manager could not found");
                         }
-                    } 
+                    }
                 }
                 else
                 {
                     Debug.LogError("Can't able to placed Object");
+                }
+                if (Input.GetMouseButtonDown(0))
+                {
+                    _placmentManager.PlaceObject(HighliterPointer.transform.position, Grid);
                 }
             }
         }

@@ -1,10 +1,10 @@
 using UnityEngine;
 
-namespace IsometricGrid.GenerateGrid
+namespace IsometricGrid.GridMaker
 {
     public class GenerateGrid : MonoBehaviour
     {
-        private Grid.Grid _grid;
+        private CustomGrid.Grid _grid;
         [SerializeField] private Transform MousePosition;
         [SerializeField] private GridTile.Tile TilePrefab;
         [SerializeField] private int Row;
@@ -15,7 +15,7 @@ namespace IsometricGrid.GenerateGrid
         {
             _reader = DataReader.Json_Reader.instance;
             GetData();
-            _grid = new Grid.Grid(Row, Col, CellSize, transform.position);
+            _grid = new CustomGrid.Grid(Row, Col, CellSize, transform.position);
             DrawTilesOnGrid();
         }
         void GetData()
@@ -27,6 +27,15 @@ namespace IsometricGrid.GenerateGrid
         {
             _grid.DrawTiles(TilePrefab,transform);
         }
-        public Grid.Grid GetGrid() { return _grid; }
+
+        //private void RightMouseClick()
+        //{
+        //    _grid.SetValue(MousePosition.position, 56);
+        //}
+        //private void LeftMouseClick()
+        //{
+        //    _grid.GetValue(MousePosition.position);
+        //}
+        public CustomGrid.Grid GetGrid() { return _grid; }
     }
 }
