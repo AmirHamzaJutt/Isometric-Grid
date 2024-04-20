@@ -8,6 +8,7 @@ namespace IsometricGrid.GridInputSystem
     public class Input_System : MonoBehaviour
     {
         [SerializeField] private Button Reset;
+
         private enum _type { Dirt = 0, Grass = 1, Stone = 2, Wood = 3 }
         [SerializeField] private _type TileType = _type.Wood;
 
@@ -17,12 +18,14 @@ namespace IsometricGrid.GridInputSystem
 
         private Camera _mainCamera;
         private PlacmentManager _placmentManager;
+
         private void Start()
         {
             Reset.onClick.AddListener(() => { ResetGrid(); });
             if (GetComponent<PlacmentManager>() != null)
             {
                 _placmentManager = GetComponent<PlacmentManager>();
+                _placmentManager.SetGrid(Grid);
             }
             _mainCamera = GetComponent<Camera>();
         }
@@ -45,28 +48,17 @@ namespace IsometricGrid.GridInputSystem
                 HighliterPointer.transform.position = targetPosition;
                 Tile tempTile = raycastHit.transform.gameObject.GetComponent<Tile>();
                 HighliterPointer.SetColor(!tempTile.IsOccupied, tempTile.TileType == (int)TileType);
-                if (!tempTile.IsOccupied && tempTile.TileType == (int)TileType)
-                {
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        if (_placmentManager != null)
-                        {
-                            _placmentManager.PlaceObject(Grid, tempTile.Id, (int)TileType);
+                //if (!tempTile.IsOccupied && tempTile.TileType == (int)TileType)
+                //{
+                //}
+                //else
+                //{
+                //    Debug.LogError("Can't able to placed Object");
+                //}
 
-                        }
-                        else
-                        {
-                            Debug.LogError("placment Manager could not found");
-                        }
-                    }
-                }
-                else
-                {
-                    Debug.LogError("Can't able to placed Object");
-                }
                 if (Input.GetMouseButtonDown(0))
                 {
-                    _placmentManager.PlaceObject(HighliterPointer.transform.position, Grid);
+                  _placmentManager.PlaceObject(HighliterPointer.transform.position);
                 }
             }
         }

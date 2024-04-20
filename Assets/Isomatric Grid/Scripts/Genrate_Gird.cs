@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEditor;
+
 
 namespace IsometricGrid.GridMaker
 {
@@ -15,7 +17,7 @@ namespace IsometricGrid.GridMaker
         {
             _reader = DataReader.Json_Reader.instance;
             GetData();
-            _grid = new CustomGrid.Grid(Row, Col, CellSize, transform.position);
+            _grid = new CustomGrid.Grid(Col, Row, CellSize, transform.position);
             DrawTilesOnGrid();
         }
         void GetData()
@@ -28,6 +30,27 @@ namespace IsometricGrid.GridMaker
             _grid.DrawTiles(TilePrefab,transform);
         }
 
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.green;
+            for (int x = 0; x < Col; x++)
+            {
+                for (int y = 0; y < Row; y++)
+                {
+                    
+                    Vector3 cellPosition = _grid. GetWorldPosition(x, y);
+                    Vector3 textPosition = cellPosition + new Vector3(CellSize / 2f, 0f, CellSize / 2f);
+                    DrawCellText(textPosition, $"{x},{y}");
+                }
+            }
+        }
+        private void DrawCellText(Vector3 position, string text)
+        {
+            GUIStyle style = new GUIStyle();
+            style.normal.textColor = Color.white;
+            Handles.Label(position, text, style);
+            Debug.LogError("draw text");
+        }
         //private void RightMouseClick()
         //{
         //    _grid.SetValue(MousePosition.position, 56);
@@ -36,6 +59,10 @@ namespace IsometricGrid.GridMaker
         //{
         //    _grid.GetValue(MousePosition.position);
         //}
-        public CustomGrid.Grid GetGrid() { return _grid; }
+
+        public CustomGrid.Grid GetGrid() 
+        {
+            return _grid; 
+        }
     }
 }
