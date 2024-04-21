@@ -43,7 +43,7 @@ namespace IsometricGrid.GridMaker
         {
             GUIStyle style = new GUIStyle();
             style.normal.textColor = Color.white;
-            Handles.Label(position, text, style);
+          //  Handles.Label(position, text, style);
             Debug.LogError("draw text");
         }
         public CustomGrid.Grid GetGrid() 
