@@ -17,7 +17,7 @@ namespace IsometricGrid.GridMaker
         {
             _reader = DataReader.Json_Reader.instance;
             Row = _reader.GridRows;
-            Col = _reader.GridCol;
+            Col = _reader.GridCols;
             _grid = new CustomGrid.Grid(Col, Row, CellSize, transform.position);
             DrawTilesOnGrid();
         }

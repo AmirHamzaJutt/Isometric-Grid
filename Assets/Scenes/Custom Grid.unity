@@ -773,10 +773,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3889aaa4e40bdc9488a320ab8a3600fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FilePath: /Isomatric Grid/Resources/Jsondata/data.json
+  filePath: Jsondata/data
   GridDataa: {fileID: 0}
   GridRows: 0
-  GridCol: 0
+  GridCols: 0
 --- !u!4 &1130865907
 Transform:
   m_ObjectHideFlags: 0
