@@ -7,7 +7,7 @@ namespace IsometricGrid.GridMaker
     public class GenerateGrid : MonoBehaviour
     {
         private CustomGrid.Grid _grid;
-        [SerializeField] private Transform MousePosition;
+        [SerializeField] private Transform Highliter;
         [SerializeField] private GridTile.Tile TilePrefab;
         [SerializeField] private int Row;
         [SerializeField] private int Col;
@@ -16,14 +16,10 @@ namespace IsometricGrid.GridMaker
         void Start()
         {
             _reader = DataReader.Json_Reader.instance;
-            GetData();
-            _grid = new CustomGrid.Grid(Col, Row, CellSize, transform.position);
-           Invoke(nameof( DrawTilesOnGrid),0.1f);
-        }
-        void GetData()
-        {
             Row = _reader.GridRows;
             Col = _reader.GridCol;
+            _grid = new CustomGrid.Grid(Col, Row, CellSize, transform.position);
+            DrawTilesOnGrid();
         }
         void DrawTilesOnGrid()
         {
@@ -37,7 +33,6 @@ namespace IsometricGrid.GridMaker
             {
                 for (int y = 0; y < Row; y++)
                 {
-                    
                     Vector3 cellPosition = _grid. GetWorldPosition(x, y);
                     Vector3 textPosition = cellPosition + new Vector3(0, 0f, CellSize / 2f);
                     DrawCellText(textPosition, $"{x},{y}" +"  Occupied="+_grid.GetOccupiedCell(textPosition));
@@ -51,15 +46,6 @@ namespace IsometricGrid.GridMaker
             Handles.Label(position, text, style);
             Debug.LogError("draw text");
         }
-        //private void RightMouseClick()
-        //{
-        //    _grid.SetValue(MousePosition.position, 56);
-        //}
-        //private void LeftMouseClick()
-        //{
-        //    _grid.GetValue(MousePosition.position);
-        //}
-
         public CustomGrid.Grid GetGrid() 
         {
             return _grid; 

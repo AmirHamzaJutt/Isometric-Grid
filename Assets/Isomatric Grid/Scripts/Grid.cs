@@ -14,7 +14,7 @@ namespace IsometricGrid.CustomGrid
         public int X, Y;
         public int Occupied;
         public int Type;
-        public GridArray(int x, int y, int type,int occupied)
+        public GridArray(int x, int y, int type, int occupied)
         {
             X = x;
             Y = y;
@@ -27,7 +27,6 @@ namespace IsometricGrid.CustomGrid
         private int _col;
         private int _row;
         private float _cellSize;
-        private int _totalTiles;
         private GridArray[,] _gridArray;
         private Vector3 _originPosition;
         public Grid(int col, int row, float cellSize, Vector3 originPosition)
@@ -46,7 +45,7 @@ namespace IsometricGrid.CustomGrid
             {
                 for (int y = 0; y < _row; y++)
                 {
-                    _gridArray[x, y] = new GridArray(x, y, 0,0);
+                    _gridArray[x, y] = new GridArray(x, y, 0, 0);
                 }
             }
         }
@@ -56,9 +55,9 @@ namespace IsometricGrid.CustomGrid
             {
                 for (int y = 0; y < _row; y++)
                 {
-                    Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), Color.red,Mathf.Infinity);
+                    Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), Color.red, Mathf.Infinity);
                     Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.black, Mathf.Infinity);
-                   
+
                 }
             }
             Debug.DrawLine(GetWorldPosition(0, _row), GetWorldPosition(_col, _row), Color.red, Mathf.Infinity);
@@ -66,22 +65,22 @@ namespace IsometricGrid.CustomGrid
         }
         public Vector3 GetWorldPosition(int x, int z)
         {
-            return new Vector3(x, 0,z) * _cellSize+_originPosition;
+            return new Vector3(x, 0, z) * _cellSize + _originPosition;
         }
         public void GetGridPosition(Vector3 worldPosition, out int x, out int z)
         {
-            x = Mathf.FloorToInt((worldPosition-_originPosition).x / _cellSize);
-            z = Mathf.FloorToInt((worldPosition-_originPosition).z / _cellSize);
+            x = Mathf.FloorToInt((worldPosition - _originPosition).x / _cellSize);
+            z = Mathf.FloorToInt((worldPosition - _originPosition).z / _cellSize);
         }
         private void SetValue(int x, int y, int value)
         {
             if (x >= 0 && y >= 0 && x < _col && y < _row)
             {
                 _gridArray[x, y].Occupied = value;
-                Debug.LogError( "Set Value of Cell  (" + x + "," + y + ")=" + _gridArray[x,y].Occupied);
+                Debug.LogError("Set Value of Cell  (" + x + "," + y + ")=" + _gridArray[x, y].Occupied);
             }
         }
-    
+
         public void SetValue(Vector3 worldPosition, int value)
         {
             int x, y;
@@ -103,33 +102,28 @@ namespace IsometricGrid.CustomGrid
         public int GetValue(Vector3 worldPosition)
         {
             int x, y;
-            GetGridPosition(worldPosition,out x, out y);
+            GetGridPosition(worldPosition, out x, out y);
             return GetValue(x, y);
         }
-        public void DrawTiles(GridTile.Tile tile,Transform parent)
+        public void DrawTiles(GridTile.Tile tile, Transform parent)
         {
             for (int x = 0; x < _col; x++)
             {
                 for (int y = 0; y < _row; y++)
                 {
-                    
-                    _totalTiles += 1;
-                    GridTile.Tile tempTile= Instantiate(tile, GetWorldPosition(x, y),Quaternion.identity);
+                    GridTile.Tile tempTile = Instantiate(tile, GetWorldPosition(x, y), Quaternion.identity);
                     tempTile.TileType = DataReader.Json_Reader.instance.GridDataa.TerrainGrid[x][y].TileType;
-                   _gridArray[x,y].Type= DataReader.Json_Reader.instance.GridDataa.TerrainGrid[x][y].TileType;
-                    tempTile. transform.parent = parent;
-                    tempTile.Id = _totalTiles;
+                    _gridArray[x, y].Type = DataReader.Json_Reader.instance.GridDataa.TerrainGrid[x][y].TileType;
+                    tempTile.transform.parent = parent;
                     tempTile.TileSize = _cellSize;
-                    tempTile.name = _totalTiles.ToString();
                 }
-            }   
+            }
         }
 
         public Vector3 FindSelectedCell(Vector3 worldPosition, int type)
         {
             int x, y;
             GetGridPosition(worldPosition, out x, out y);
-            Debug.LogError("Selected Value of Cell  (" + x + "," + y + ")=" + _gridArray[x, y].Occupied + " type=" + _gridArray[x, y].Type);
             Vector3 pos = GetWorldPosition(x, y);
             Vector3 centre = pos + new Vector3(_cellSize / 2f, 0f, _cellSize / 2f);
             return centre;
@@ -149,7 +143,7 @@ namespace IsometricGrid.CustomGrid
             }
             else
             {
-                return new Vector3(-1,-1, -1);
+                return new Vector3(-1, -1, -1);
             }
         }
         public Vector3 FindRightCell(Vector3 worldPosition, int type)
@@ -165,7 +159,7 @@ namespace IsometricGrid.CustomGrid
             }
             else
             {
-                return new Vector3(-1,-1, -1);
+                return new Vector3(-1, -1, -1);
             }
         }
         public Vector3 FindTopCell(Vector3 worldPosition, int type)
@@ -181,7 +175,7 @@ namespace IsometricGrid.CustomGrid
             }
             else
             {
-                return new Vector3(-1,-1, -1);
+                return new Vector3(-1, -1, -1);
             }
         }
         public Vector3 FindBottomCell(Vector3 worldPosition, int type)
@@ -197,7 +191,7 @@ namespace IsometricGrid.CustomGrid
             }
             else
             {
-                return new Vector3(-1,-1, -1);
+                return new Vector3(-1, -1, -1);
             }
         }
         public bool GetOccupiedCell(Vector3 position)
@@ -211,26 +205,17 @@ namespace IsometricGrid.CustomGrid
             else { return true; }
 
         }
-        public void SetOccupiedCell(Vector3 position,int value)
+        public void SetOccupiedCell(Vector3 position, int value)
         {
-            int x=(int)position.x, y=(int)position.z;
+            int x = (int)position.x, y = (int)position.z;
             GetGridPosition(position, out x, out y);
-           _gridArray[x, y].Occupied = value;
-        }
-        public bool GetOccupiedCell(int x, int y)
-        {
-            if (_gridArray[x, y].Occupied == 0)
-            {
-                return false;
-            }
-            else { return true; }
-
+            _gridArray[x, y].Occupied = value;
         }
         public int GetType(Vector3 position)
         {
             int x, y;
             GetGridPosition(position, out x, out y);
-            return _gridArray[x,y].Type;
+            return _gridArray[x, y].Type;
         }
     }
 }

@@ -3,14 +3,14 @@ using IsometricGrid.PlacmentController;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace IsometricGrid.GridInputSystem
+namespace IsometricGrid.GrindController
 {
-    public class Input_System : MonoBehaviour
+    public class GridManager : MonoBehaviour
     {
         [SerializeField] private Button Reset;
         [SerializeField] private LayerMask Layer;
         [SerializeField] Type.TileType Tile_type = Type.TileType.Wood;
-
+        [SerializeField] MobileUIDrag MobileTouchInput;
 
         public Highliter HighliterPointer;
         public GridMaker.GenerateGrid GenratedGrid;
@@ -28,7 +28,7 @@ namespace IsometricGrid.GridInputSystem
                 _placmentManager.SetGrid(GenratedGrid);
             }
             _mainCamera = GetComponent<Camera>();
-            Invoke(nameof(SetGrid), 0.2f);
+            Invoke(nameof(SetGrid), 0.1f);
         }
         public void SetGrid()
         {
@@ -51,23 +51,17 @@ namespace IsometricGrid.GridInputSystem
             {
                 Vector3 targetPosition = raycastHit.collider.bounds.center;
                 HighliterPointer.transform.position = targetPosition;
-                // Tile tempTile = raycastHit.transform.gameObject.GetComponent<Tile>();tempTile.TileType == (int)Tile_type
                 int tileType = _grid.GetType(targetPosition);
                 bool occupiedCheck = _grid.GetOccupiedCell(targetPosition);
                 HighliterPointer.SetColor(!occupiedCheck, tileType == (int)Tile_type);
-                //if (!tempTile.IsOccupied && tempTile.TileType == (int)TileType)
-                //{
-                //}
-                //else
-                //{
-                //    Debug.LogError("Can't able to placed Object");
-                //}
-
                 if (tileType == (int)Tile_type && !occupiedCheck)
                 {
-                    if (Input.GetMouseButtonDown(0))
+                    if (!MobileTouchInput.OnDragState())
                     {
-                        _placmentManager.PlaceObject(HighliterPointer.transform.position, (int)Tile_type);
+                        if (MobileTouchInput.OnPointerState())
+                        {
+                            _placmentManager.PlaceObject(HighliterPointer.transform.position, (int)Tile_type);
+                        }
                     }
                 }
                 else
