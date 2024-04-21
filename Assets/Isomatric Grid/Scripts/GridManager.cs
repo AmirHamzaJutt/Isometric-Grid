@@ -7,16 +7,16 @@ namespace IsometricGrid.GrindController
 {
     public class GridManager : MonoBehaviour
     {
-        [SerializeField] private Button Reset;
         [SerializeField] private LayerMask Layer;
         [SerializeField] Type.TileType Tile_type = Type.TileType.Wood;
+        [SerializeField] private Camera MainCamera;
+        [SerializeField] private Button Reset;
         [SerializeField] MobileUIDrag MobileTouchInput;
 
         public Highliter HighliterPointer;
         public GridMaker.GenerateGrid GenratedGrid;
 
         private CustomGrid.Grid _grid;
-        private Camera _mainCamera;
         private PlacmentManager _placmentManager;
 
         private void Start()
@@ -27,7 +27,6 @@ namespace IsometricGrid.GrindController
                 _placmentManager = GetComponent<PlacmentManager>();
                 _placmentManager.SetGrid(GenratedGrid);
             }
-            _mainCamera = GetComponent<Camera>();
             Invoke(nameof(SetGrid), 0.1f);
         }
         public void SetGrid()
@@ -45,7 +44,7 @@ namespace IsometricGrid.GrindController
         private void Update()
         {
             Vector3 mousePosition = Input.mousePosition;
-            Ray ray = _mainCamera.ScreenPointToRay(mousePosition);
+            Ray ray = MainCamera.ScreenPointToRay(mousePosition);
             RaycastHit raycastHit;
             if (Physics.Raycast(ray, out raycastHit, Mathf.Infinity, Layer))
             {
@@ -69,6 +68,7 @@ namespace IsometricGrid.GrindController
                     Debug.LogError("Area Not Available");
                 }
             }
+
         }
     }
 }

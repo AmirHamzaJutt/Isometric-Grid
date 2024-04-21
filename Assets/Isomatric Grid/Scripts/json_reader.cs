@@ -11,8 +11,8 @@ namespace IsometricGrid.DataReader
         [SerializeField] private string FilePath;
         [HideInInspector] public GridData GridDataa;
 
-        public int GridRows;
-        public int GridCol;
+        [HideInInspector] public int GridRows;
+        [HideInInspector] public int GridCol;
         public static Json_Reader instance;
 
         private void Awake()
