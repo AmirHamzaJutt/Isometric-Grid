@@ -4,6 +4,8 @@ using UnityEngine;
 using IsometricGrid.GridMaker;
 using System.Collections.Generic;
 using IsometricGrid.CustomGrid;
+using TMPro;
+using System.Runtime.CompilerServices;
 
 namespace IsometricGrid.PlacmentController
 {
@@ -26,12 +28,12 @@ namespace IsometricGrid.PlacmentController
       //  private Tile _bottomNeihbour;
        // private Tile _topNeihbour;
 
-        public Vector2 _selectedCell;
-        public Vector2 _leftCell;
-        public Vector2 _rightCell;
-        public Vector2 _bottomCell;
-        public Vector2 _topCell;
-
+        public Vector3 _selectedCell;
+        public Vector3 _leftCell;
+        public Vector3 _rightCell;
+        public Vector3 _bottomCell;
+        public Vector3 _topCell;
+        
         public List<GameObject> _allSpawnObjects;
 
         private GenerateGrid _generateGrid;
@@ -47,64 +49,56 @@ namespace IsometricGrid.PlacmentController
             _generateGrid= grid;
             _grid = _generateGrid.GetGrid();
         }
-        public void PlaceObject(Vector3 position,int type)
+        public void PlaceObject(Vector3 position, int type)
         {
             _grid = _generateGrid.GetGrid();
-            FindNeighbourWithGrid(position,type);
+            FindNeighbourWithGrid(position, type);
+            int tileTypeLeft = _grid.GetType(_leftCell);
+            int tileTypeRight = _grid.GetType(_rightCell); 
+            int tileTypeTop = _grid.GetType(_topCell);
+            int tileTypeBottom = _grid.GetType(_bottomCell);
 
-            Tile temptile = _generateGrid.transform.GetChild(2).GetComponent<Tile>();
-            if (_grid.GetValue(_selectedCell)==0)
+            bool occupiedCheckleft = _grid.GetOccupiedCell(_leftCell);
+            bool occupiedCheckright = _grid.GetOccupiedCell(_rightCell);
+            bool occupiedCheckTop = _grid.GetOccupiedCell(_topCell);
+            bool occupiedCheckBottom = _grid.GetOccupiedCell(_bottomCell);
+
+
+            _grid.SetOccupiedCell(_selectedCell, 1);
+            if (_leftCell.x != -1 && tileTypeLeft == type && !occupiedCheckleft)
             {
-                _grid.SetValue(_selectedCell, 1);
-                if (_leftCell.x != -1 || _rightCell.x != -1)
-                {
-                    Debug.LogError("horizontal object placed");
-                    Vector3 cellPos;
-                    if (_leftCell.x != -1)
-                    {
-                        _grid.SetValue(_leftCell, 1);
-                        //  colider = _leftNeihbour.GetComponent<Collider>();
-                        int x, y;
-                        _grid.GetGridPosition(position,out x,out y);
-                        cellPos = new Vector3(x,0,y);
-                    }
-                    else
-                    {
-                        _grid.SetValue(_rightCell, 1);
-                        int x, y;
-                        _grid.GetGridPosition(position, out x, out y);
-                        cellPos = new Vector3(x, 0, y);
-                    }
-                    Vector3 center = cellPos;
-                     GameObject tempObject = Instantiate(VerticalPrefeb, center, transform.rotation);
-                     _allSpawnObjects.Add(tempObject);
-                }
-               else if (_topCell.x != -1 || _bottomCell.x != -1)
-                {
-                    Debug.LogError("vertical object placed");
-                    if (_bottomCell.x != -1)
-                    {
-                        _grid.SetValue(_bottomCell, 1);
-                        //colider = _bottomNeihbour.GetComponent<Collider>();
-                    }
-                    else
-                    {
-                        _grid.SetValue(_topCell, 1);
-                        // colider = _selectedGameobject.GetComponent<Collider>();
-                    }
-                    //Vector3 center = colider.bounds.center;
-                    //GameObject tempObject = Instantiate(VerticalPrefeb, center, _selectedGameobject.transform.rotation);
-                    // _allSpawnObjects.Add(tempObject);
-                }
-                else
-                {
-                    Debug.LogError("No space Available for placing object");
-                }
+                Debug.LogError("horizontal Left Side object placed");
+                _grid.SetOccupiedCell(_leftCell, 1);
+                GameObject tempObject = Instantiate(VerticalPrefeb, _selectedCell, Quaternion.identity);
+                _allSpawnObjects.Add(tempObject);
+            }
+            else if (_rightCell.x != -1 && tileTypeRight == type && !occupiedCheckright)
+            {
+                Debug.LogError("horizontal Right Side object placed" + tileTypeRight);
+                _grid.SetOccupiedCell(_rightCell, 1);
+                GameObject tempObject = Instantiate(VerticalPrefeb, _rightCell, Quaternion.identity);
+                _allSpawnObjects.Add(tempObject);
+            }
+            else if (_topCell.x != -1 && tileTypeTop == type && !occupiedCheckTop)
+            {
+                Debug.LogError("vertical top object placed");
+                _grid.SetOccupiedCell(_topCell, 1);
+                GameObject tempObject = Instantiate(HorizontalPrefeb, _selectedCell, Quaternion.identity);
+                _allSpawnObjects.Add(tempObject);
+            }
+            else if (_bottomCell.x != -1 && tileTypeBottom == type && !occupiedCheckBottom)
+            {
+                Debug.LogError("vertical Bottom object placed");
+                _grid.SetOccupiedCell(_bottomCell, 1);
+                GameObject tempObject = Instantiate(HorizontalPrefeb, _bottomCell, Quaternion.identity);
+                _allSpawnObjects.Add(tempObject);
             }
             else
             {
-                Debug.LogError("Space Occupied");
+                Debug.LogError("No space Available for placing object");
             }
+
+
         }
         //public void PlaceObject(GenerateGrid grid, int index, int availableType)
         //{
@@ -211,7 +205,7 @@ namespace IsometricGrid.PlacmentController
         public void FindNeighbourWithGrid(Vector3 position, int type)
         {
             
-            _selectedCell = _grid.FindSelectedCell(position);
+            _selectedCell = _grid.FindSelectedCell(position,type);
             _leftCell = _grid.FindLeftCell(position, type);
             _rightCell = _grid.FindRightCell(position, type);
             _topCell = _grid.FindTopCell(position, type);

@@ -230,12 +230,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Reset: {fileID: 371497725}
-  Tile_type: 3
-  HighliterPointer: {fileID: 1427838862}
-  Grid: {fileID: 1053916649}
   Layer:
     serializedVersion: 2
     m_Bits: 8
+  Tile_type: 3
+  HighliterPointer: {fileID: 1427838862}
+  GenratedGrid: {fileID: 1053916649}
 --- !u!114 &19086934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,11 +250,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HorizontalPrefeb: {fileID: 3126584769807534341, guid: 2f70641124b0c704ebce626d4634c3de, type: 3}
   VerticalPrefeb: {fileID: 4299573374420796662, guid: 15265e5b6353e0346bf29b899750691c, type: 3}
-  _selectedCell: {x: 0, y: 0}
-  _leftCell: {x: 0, y: 0}
-  _rightCell: {x: 0, y: 0}
-  _bottomCell: {x: 0, y: 0}
-  _topCell: {x: 0, y: 0}
+  _selectedCell: {x: 0, y: 0, z: 0}
+  _leftCell: {x: 0, y: 0, z: 0}
+  _rightCell: {x: 0, y: 0, z: 0}
+  _bottomCell: {x: 0, y: 0, z: 0}
+  _topCell: {x: 0, y: 0, z: 0}
+  _allSpawnObjects: []
 --- !u!1 &84733022
 GameObject:
   m_ObjectHideFlags: 0

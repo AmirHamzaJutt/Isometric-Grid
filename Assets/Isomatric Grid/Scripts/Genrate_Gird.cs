@@ -39,8 +39,8 @@ namespace IsometricGrid.GridMaker
                 {
                     
                     Vector3 cellPosition = _grid. GetWorldPosition(x, y);
-                    Vector3 textPosition = cellPosition + new Vector3(CellSize / 2f, 0f, CellSize / 2f);
-                    DrawCellText(textPosition, $"{x},{y}");
+                    Vector3 textPosition = cellPosition + new Vector3(0, 0f, CellSize / 2f);
+                    DrawCellText(textPosition, $"{x},{y}" +"  Occupied="+_grid.GetOccupiedCell(textPosition));
                 }
             }
         }

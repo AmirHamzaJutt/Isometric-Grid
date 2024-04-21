@@ -1,6 +1,5 @@
 using IsometricGrid.GridTile;
 using IsometricGrid.PlacmentController;
-using IsometricGrid.Type;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,13 +8,14 @@ namespace IsometricGrid.GridInputSystem
     public class Input_System : MonoBehaviour
     {
         [SerializeField] private Button Reset;
-
+        [SerializeField] private LayerMask Layer;
         [SerializeField] Type.TileType Tile_type = Type.TileType.Wood;
 
-        public Highliter HighliterPointer;
-        public GridMaker.GenerateGrid Grid;
-        [SerializeField] private LayerMask Layer;
 
+        public Highliter HighliterPointer;
+        public GridMaker.GenerateGrid GenratedGrid;
+
+        private CustomGrid.Grid _grid;
         private Camera _mainCamera;
         private PlacmentManager _placmentManager;
 
@@ -25,9 +25,14 @@ namespace IsometricGrid.GridInputSystem
             if (GetComponent<PlacmentManager>() != null)
             {
                 _placmentManager = GetComponent<PlacmentManager>();
-                _placmentManager.SetGrid(Grid);
+                _placmentManager.SetGrid(GenratedGrid);
             }
             _mainCamera = GetComponent<Camera>();
+            Invoke(nameof(SetGrid), 0.2f);
+        }
+        public void SetGrid()
+        {
+            _grid = GenratedGrid.GetGrid();
         }
         public void ResetGrid()
         {
@@ -46,8 +51,10 @@ namespace IsometricGrid.GridInputSystem
             {
                 Vector3 targetPosition = raycastHit.collider.bounds.center;
                 HighliterPointer.transform.position = targetPosition;
-                Tile tempTile = raycastHit.transform.gameObject.GetComponent<Tile>();
-                HighliterPointer.SetColor(!tempTile.IsOccupied, tempTile.TileType == (int)Tile_type);
+                // Tile tempTile = raycastHit.transform.gameObject.GetComponent<Tile>();tempTile.TileType == (int)Tile_type
+                int tileType = _grid.GetType(targetPosition);
+                bool occupiedCheck = _grid.GetOccupiedCell(targetPosition);
+                HighliterPointer.SetColor(!occupiedCheck, tileType == (int)Tile_type);
                 //if (!tempTile.IsOccupied && tempTile.TileType == (int)TileType)
                 //{
                 //}
@@ -56,7 +63,7 @@ namespace IsometricGrid.GridInputSystem
                 //    Debug.LogError("Can't able to placed Object");
                 //}
 
-                if (tempTile.TileType == (int)Tile_type)
+                if (tileType == (int)Tile_type && !occupiedCheck)
                 {
                     if (Input.GetMouseButtonDown(0))
                     {
