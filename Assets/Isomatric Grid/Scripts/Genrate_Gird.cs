@@ -15,7 +15,7 @@ namespace IsometricGrid.GridMaker
         private DataReader.Json_Reader _reader;
         void Start()
         {
-            _reader = DataReader.Json_Reader.instance;
+            _reader = DataReader.Json_Reader.Instance;
             Row = _reader.GridRows;
             Col = _reader.GridCols;
             _grid = new CustomGrid.Grid(Col, Row, CellSize, transform.position);
@@ -43,7 +43,7 @@ namespace IsometricGrid.GridMaker
         {
             GUIStyle style = new GUIStyle();
             style.normal.textColor = Color.white;
-          //  Handles.Label(position, text, style);
+            Handles.Label(position, text, style);
             Debug.LogError("draw text");
         }
         public CustomGrid.Grid GetGrid() 

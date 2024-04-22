@@ -112,8 +112,8 @@ namespace IsometricGrid.CustomGrid
                 for (int y = 0; y < _row; y++)
                 {
                     GridTile.Tile tempTile = Instantiate(tile, GetWorldPosition(x, y), Quaternion.identity);
-                    tempTile.TileType = DataReader.Json_Reader.instance.GridDataa.TerrainGrid[x][y].TileType;
-                    _gridArray[x, y].Type = DataReader.Json_Reader.instance.GridDataa.TerrainGrid[x][y].TileType;
+                    tempTile.TileType = DataReader.Json_Reader.Instance.GridDataa.TerrainGrid[x][y].TileType;
+                    _gridArray[x, y].Type = DataReader.Json_Reader.Instance.GridDataa.TerrainGrid[x][y].TileType;
                     tempTile.transform.parent = parent;
                     tempTile.TileSize = _cellSize;
                 }
