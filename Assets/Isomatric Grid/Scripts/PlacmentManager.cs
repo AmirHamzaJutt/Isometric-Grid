@@ -26,8 +26,8 @@ namespace IsometricGrid.PlacmentController
 
         private void Start()
         {
-            _row = Json_Reader.instance.GridRows;
-            _col = Json_Reader.instance.GridCols;
+            _row = Json_Reader.Instance.GridRows;
+            _col = Json_Reader.Instance.GridCols;
         }
         public void SetGrid(GenerateGrid grid)
         {

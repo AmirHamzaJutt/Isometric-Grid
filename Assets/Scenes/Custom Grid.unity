@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3708985, g: 0.3783704, b: 0.35722548, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -709,7 +709,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1130865907}
-  - component: {fileID: 1130865906}
+  - component: {fileID: 1130865908}
   m_Layer: 0
   m_Name: DataReader
   m_TagString: Untagged
@@ -717,22 +717,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1130865906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1130865905}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3889aaa4e40bdc9488a320ab8a3600fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  filePath: Jsondata/data
-  GridDataa: {fileID: 0}
-  GridRows: 0
-  GridCols: 0
 --- !u!4 &1130865907
 Transform:
   m_ObjectHideFlags: 0
@@ -748,6 +732,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1130865908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1130865905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92cf193362facca4c9d44725ad480397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FilePath: Jsondata/data
+  GridDataa: {fileID: 0}
+  GridRows: 0
+  GridCols: 0
 --- !u!1 &1388400758
 GameObject:
   m_ObjectHideFlags: 0

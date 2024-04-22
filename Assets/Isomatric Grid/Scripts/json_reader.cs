@@ -1,38 +1,32 @@
 using UnityEngine;
-using System.IO;
 using Newtonsoft.Json;
 using IsometricGrid.Data;
+
 namespace IsometricGrid.DataReader
 {
     public class Json_Reader : MonoBehaviour
     {
-        [SerializeField] private string filePath;
-        public GridData GridDataa;
+        [SerializeField] private string FilePath;
 
-        public int GridRows;
-        public int GridCols;
+        [HideInInspector] public GridData GridDataa;
+        [HideInInspector] public int GridRows;
+        [HideInInspector] public int GridCols;
 
-        public static Json_Reader instance;
+        public static Json_Reader Instance;
 
         private void Awake()
         {
-            instance = this;
-
-            // Load the JSON file from the Resources folder
-            TextAsset jsonFile = Resources.Load<TextAsset>(filePath);
-
+            Instance = this;
+            TextAsset jsonFile = Resources.Load<TextAsset>(FilePath);
             if (jsonFile != null)
             {
-                // Deserialize JSON data
                 GridDataa = JsonConvert.DeserializeObject<GridData>(jsonFile.text);
-
-                // Set grid rows and columns
                 GridRows = GridDataa.TerrainGrid.Length;
                 GridCols = GridDataa.TerrainGrid[0].Length;
             }
             else
             {
-                Debug.LogError("Failed to load JSON file from Resources folder: " + filePath);
+                Debug.LogError("Failed to load JSON file from Resources folder: " + FilePath);
             }
         }
     }
